@@ -46,6 +46,31 @@
                 </div>
             </div>
         </div>
+        <form action="http://localhost:3000/teams/:id"> 
+            <label for="queens">Choose your top three queens:</label>
+            <select id="first-queen" name="first-queen">
+                <option value="1">queen.name</option>
+                <option value="2">queen.name</option>
+                <option value="3">queen.name</option>
+            </select>
+            <select id="second-queen" name="second-queen">
+                <option value="4">queen.name</option>
+                <option value="5">queen.name</option>
+                <option value="6">queen.name</option>
+                <!-- this will ideally have the first queen removed dynamically -->
+            </select>
+            <select id="third-queen" name="third-queen">
+                <option value="7">queen.name</option>
+                <option value="8">queen.name</option>
+                <option value="9">queen.name</option>
+                <!-- this will ideally have the first and second queen removed dynamically -->
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+
+        <div id = "country">
+            <!-- show country names here -->
+        </div>
 </body>
 </html>
 
