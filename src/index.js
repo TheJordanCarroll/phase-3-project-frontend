@@ -29,17 +29,16 @@ function showSeasonQueens() {
 // Function //
 
 function accessSelectedCountryQueens(e) {
-    countryId = e.id
     fetch(`http://localhost:3000/queens/`) 
     .then(response => response.json())
-    .then(data => data.forEach(element => element.country_id === countryId ? showAllQueens(element) : ""))
+    .then(data => data.forEach(element => element.country_id === e.id ? showAllQueens(element) : ""))
 }
 
 function showAllQueens(e) {
     let span = document.createElement("img")
     span.src = e.gif
     span.dataset.id = e.id
-    countryPage.append(span)
+    seasonAllQueens.append(span)
 }
 function showAllCountries(e) {
     let span = document.createElement("img")
@@ -48,11 +47,4 @@ function showAllCountries(e) {
     countryPage.append(span)
 }
 
-// function seasonQueens(e) {
-// //  e.country_id === countryId ? console.log(e.image) : console.log(e.name)
-// }
-
-
-
 showCountries()
-showSeasonQueens()
