@@ -1,33 +1,24 @@
 // Query Selectors //
-countryPage = document.querySelector("#country")
-seasonAllQueens = document.querySelector(".queenContentwrapper")
+countriesPage = document.querySelector("#countries")
+queensPage = document.querySelector(".queens")
 let countryId = 1
 
-// Event Listener //
-// countryPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)})
-countryPage.addEventListener("click", handleClick)
+// Event Listeners //
+countryPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)})
+queensPage.addEventListener("click", handleQueenClick)
 
-// Fetch //
-
-function showCountries () {
+// Fetch Requests //
+function showCountries() {
     fetch("http://localhost:3000/countries") 
     .then(response => response.json())
     .then(data => data.forEach(element => showAllCountries(element)))
 }
 
-function handleClick(e){
-    if (e.target.id === "rendered-country"){
-      selectCountry(e.target.dataset.id)
-    } else if (e.target.id === "rendered-queen"){
-        console.log(hello)
-    }
-}
-// handleClick()
-
-function selectCountry (countryId) {
+function selectCountry(countryId) {
     fetch(`http://localhost:3000/countries/${countryId}`) 
     .then(response => response.json())
     .then(data => accessSelectedCountryQueens(data))
+    
 }
 
 function showSeasonQueens() {
@@ -35,35 +26,35 @@ function showSeasonQueens() {
     .then(response => response.json())
     .then(data => data.forEach(element => seasonQueens(element)))
 }
-// Function //
 
+// Functions //
 function accessSelectedCountryQueens(e) {
-    countryId = e.id
     fetch(`http://localhost:3000/queens/`) 
     .then(response => response.json())
-    .then(data => data.forEach(element => element.country_id === countryId ? showAllQueens(element) : ""))
+    .then(data => data.forEach(element => element.country_id === e.id ? showAllQueens(element) : ""))
 }
 
 function showAllQueens(e) {
     let span = document.createElement("img")
-    span.id = "rendered-queen"
+    span.class = "rendered-queen"
     span.src = e.gif
     span.dataset.id = e.id
-    countryPage.append(span)
+    seasonAllQueens.append(span)
 }
 
 function showAllCountries(e) {
     let span = document.createElement("img")
-    span.id = "rendered-country"
     span.src = e.image
     span.dataset.id = e.id
     countryPage.append(span)
 }
 
-// function seasonQueens(e) {
-// //  e.country_id === countryId ? console.log(e.image) : console.log(e.name)
-// }
-
-
+function handleQueenClick(e){
+    if (e.target.className === "rendered-queen"){
+      const queenId = e.target.dataset.id
+      getSingleQueen(queenId)
+    }
+}
 
 showCountries()
+
