@@ -5,7 +5,14 @@ const queensPage = document.querySelector(".queens")
 const queenContainer = document.querySelector(".queen-container")
 const teamPage = document.querySelector(".team-page")
 const landingPage = document.querySelector(".landing-page")
+const loginForm = document.getElementById("login-form")
+const loginButton = document.getElementById("login-form-submit")
+const loginErrorMsg = document.getElementById("login-error-msg")
+const loginHeader = document.getElementById("login-header")
+const errorMessage = document.querySelector(".error-message")
+const SignupButton = document.getElementById("signup-form-submit")
 let countryId = 1
+let currentUser
 
 // Event Handling //
 countriesPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)})
@@ -18,6 +25,43 @@ function queenGifClick(e){
         const queenId = e.target.dataset.id
         getSingleQueen(queenId)
     }
+}
+
+loginButton.addEventListener("click", validateUsername)
+
+function validateUsername(e) {
+    e.preventDefault();
+    const username = loginForm.username.value;
+
+    fetch("http://localhost:3000/users") 
+    .then(response => response.json())
+    .then(data => data.forEach(element => element.username === username ? retrieveCurrentUser(element) : showErrorMessage()))
+}
+
+SignupButton.addEventListener("click", signupUsername)
+
+function signupUsername(e) {
+    e.preventDefault();
+    const newUsername = loginForm.username.value;
+
+    fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: newUsername})
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+}
+
+function retrieveCurrentUser(element) {
+    currentUser = element
+    console.log(currentUser)
+}
+
+function showErrorMessage() {
+    errorMessage.innerText = "Invalid Username. Please attempt to login again or sign up."
 }
 
 // Fetch/Network Requests //
@@ -74,7 +118,8 @@ console.log(teamGif)
 countriesPage.innerHTML = ""
 queensPage.innerHTML = ""
 landingPage.innerHTML = ""
-    }}
+}}
+
 // Manipulating the DOM //
 function showAllQueens(e) {
     let span = document.createElement("img")
@@ -150,5 +195,5 @@ function queenGifClick(e){
 //         getContract(e.id)
 //     })
 // })
-showTeams()
-showCountries()
+// showTeams()
+// showCountries()

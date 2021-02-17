@@ -36,12 +36,20 @@
             </div>
         </div>
         <div class="container">
-            <div class="login-page">
-                <form style="margin-top: -5px;" class="form-signin" id="log-in-form">
-                    <input class="form-control" style="text-align: center;" type="text" name="username" placeholder="Enter Your Username">
-                    <button class="btn btn-sm btn-primary btn-block" type="submit" style="margin-top: 10px;">Login</button>
+            <main id="main-holder">
+                <h1 id="login-header">Login</h1>
+                
+                <div id="login-error-msg-holder">
+                  <p id="login-error-msg">Invalid Username. Please attempt to login again or sign up.</p>
+                </div>
+                
+                <form id="login-form">
+                  <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username">
+                  <input type="submit" value="Login" id="login-form-submit">
+                  <input type="submit" value="Signup" id="signup-form-submit">
+                  <p class="error-message"></p>
                 </form>
-            </div>
+            </main>
             <div class="landing-page">
 
             </div>
