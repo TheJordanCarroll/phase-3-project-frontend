@@ -91,3 +91,11 @@ body {
 .rightLinkWrapper a:hover {
     border-bottom: black;
 }
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}

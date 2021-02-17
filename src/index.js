@@ -1,8 +1,10 @@
 // Grab DOM Elements //
+const container = document.querySelector(".container")
 const countriesPage = document.querySelector(".countries")
 const queensPage = document.querySelector(".queens")
 const queenContainer = document.querySelector(".queen-container")
-const teamsPage = document.querySelector(".teams")
+const teamPage = document.querySelector(".team-page")
+const landingPage = document.querySelector(".landing-page")
 let countryId = 1
 
 // Event Handling //
@@ -49,6 +51,20 @@ function getSingleQueen(queenId){
     .then(data => addQueenShowSection(data))
 }
 
+function getContract(teamId){
+    fetch(`http://localhost:3000/contracts`)
+    .then(res => res.json())
+    .then(data => data.forEach(element => showTeamInfo(element, teamId)))
+}
+
+function showTeamInfo(element, teamId){
+    if (element.team_id == teamId){
+        landingPage.className = "hide"
+        teamPage.innerHTML += `<br>${element.queen.name}`
+        teamPage.className = "show"
+}
+}
+
 // Manipulating the DOM //
 function showAllQueens(e) {
     let span = document.createElement("img")
@@ -82,14 +98,42 @@ function addQueenShowSection(singleQueen) {
 
 function showAllTeams(e) {
     let teamDiv = document.createElement("div")
-    teamDiv.innerHTML = `
-    <h2 class="team-name">Name: ${e.name}</h2>
-    <img class="team-image" src=${e.image} alt=${e.name} />
-    <h3 class="team-country">Show: ${e.country.name}</h3>
-    `
+    teamDiv.className = "card"
+    let imgDiv = document.createElement("img")
+    imgDiv.className = "card-img-top"
+    imgDiv.src = e.image
+    let bodyDiv = document.createElement("div")
+    bodyDiv.className = "card-body"
+    let headingDiv = document.createElement("h5")
+    headingDiv.className = "card-title"
+    headingDiv.textContent = e.name
+    let buttonDiv = document.createElement("button")
+    buttonDiv.className = "btn btn-primary team-button" 
+    buttonDiv.textContent = "View Team"
+    buttonDiv.dataset.id = e.id
+    buttonDiv.addEventListener('click', teamButtonClick)
+    bodyDiv.append(headingDiv, buttonDiv)
+    teamDiv.append(imgDiv, bodyDiv)
+    landingPage.append(teamDiv)
 }
 
+function teamButtonClick(e) {
+    console.log("teamButtonClick")
+    getContract(e.target.dataset.id)
+}
+
+// function queenGifClick(e){
+//     // console.log(e.target.class)
+//     if (e.target.class === "rendered-queen"){
+//         const queenId = e.target.dataset.id
+//         getSingleQueen(queenId)
+//     }
+// }
+// document.ready(function(){
+//     const button = document.querySelector(".team-button")
+//     button.bind("click", function(e){
+//         getContract(e.id)
+//     })
+// })
+showTeams()
 showCountries()
-
-// <h3 class="country-name">Country: ${singleQueen.country.name}</h3>
-
