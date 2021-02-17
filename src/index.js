@@ -13,7 +13,7 @@ countriesPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)
 // queensPage.addEventListener("click", handleClick)
 
 function queenGifClick(e){
-    // console.log(e.target.class)
+    console.log(e.target.class)
     if (e.target.class === "rendered-queen"){
         const queenId = e.target.dataset.id
         getSingleQueen(queenId)
@@ -58,13 +58,23 @@ function getContract(teamId){
 }
 
 function showTeamInfo(element, teamId){
-    if (element.team_id == teamId){
-        landingPage.className = "hide"
-        teamPage.innerHTML += `<br>${element.queen.name}`
-        teamPage.className = "show"
-}
-}
-
+    if (parseInt(element.team_id) === parseInt(teamId)){
+let teamInfo = document.createElement("div")
+let teamGif = document.createElement("img")
+let teamPar = document.createElement("p")
+teamGif.class = "rendered-queen"
+teamPar.innerText = element.queen.name
+teamGif.src = element.queen.gif
+teamGif.dataset.id = element.queen.id
+teamInfo.append(teamGif)
+teamInfo.append(teamPar)
+teamPage.append(teamInfo)
+teamGif.addEventListener('click', queenGifClick)
+console.log(teamGif)
+countriesPage.innerHTML = ""
+queensPage.innerHTML = ""
+landingPage.innerHTML = ""
+    }}
 // Manipulating the DOM //
 function showAllQueens(e) {
     let span = document.createElement("img")
@@ -76,6 +86,7 @@ function showAllQueens(e) {
     countriesPage.remove()
     gifDiv.append(span)
     queensPage.append(gifDiv)
+    landingPage.innerHTML = ""
 }
 
 function showAllCountries(e) {
@@ -94,6 +105,10 @@ function addQueenShowSection(singleQueen) {
     <a class="queen-instagram" href="${singleQueen.instagram}">Instagram</a>
     <a class="queen-twitter" href="${singleQueen.twitter}">Twitter</a>
     `
+    countriesPage.innerHTML = ""
+    queensPage.innerHTML = ""
+    teamPage.innerHTML = ""
+    landingPage.innerHTML = ""
 }
 
 function showAllTeams(e) {
@@ -122,13 +137,13 @@ function teamButtonClick(e) {
     getContract(e.target.dataset.id)
 }
 
-// function queenGifClick(e){
-//     // console.log(e.target.class)
-//     if (e.target.class === "rendered-queen"){
-//         const queenId = e.target.dataset.id
-//         getSingleQueen(queenId)
-//     }
-// }
+function queenGifClick(e){
+    // console.log(e.target.class)
+    if (e.target.class === "rendered-queen"){
+        const queenId = e.target.dataset.id
+        getSingleQueen(queenId)
+    }
+}
 // document.ready(function(){
 //     const button = document.querySelector(".team-button")
 //     button.bind("click", function(e){

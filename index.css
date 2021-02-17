@@ -92,10 +92,3 @@ body {
     border-bottom: black;
 }
 
-.show {
-    display: block;
-}
-
-.hide {
-    display: none;
-}
