@@ -10,7 +10,10 @@ const loginButton = document.getElementById("login-form-submit")
 const loginErrorMsg = document.getElementById("login-error-msg")
 const loginHeader = document.getElementById("login-header")
 const errorMessage = document.querySelector(".error-message")
-const SignupButton = document.getElementById("signup-form-submit")
+const signupButton = document.getElementById("signup-form-submit")
+const mainHolder = document.getElementById("main-holder")
+const topThree = document.querySelector(".top-3-form")
+const navBar = document.querySelector(".nav-wrapper")
 let countryId = 1
 let currentUser
 let currentUserId
@@ -19,7 +22,7 @@ let newUser
 // Event Handling //
 countriesPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)})
 loginButton.addEventListener("click", validateUsername)
-SignupButton.addEventListener("click", signupUsername)
+signupButton.addEventListener("click", signupUsername)
 
 
 // Fetch/Network Requests //
@@ -80,7 +83,6 @@ landingPage.innerHTML = ""
 function validateUsername(e) {
     e.preventDefault();
     const username = loginForm.username.value;
-
     fetch("http://localhost:3000/users") 
     .then(response => response.json())
     .then(data => data.forEach(element => element.username === username ? retrieveCurrentUser(element) : showErrorMessage()))
@@ -189,11 +191,46 @@ function getCurrentUserTeams(currentUser) {
     fetch("http://localhost:3000/teams") 
     .then(response => response.json())
     .then(data => data.forEach(element => element.user_id === currentUser.id ? showAllTeams(element) : ""))
+    renderNavBar()
+    mainHolder.innerHTML = ""
 }
 
 function showErrorMessage() {
     errorMessage.innerText = "Invalid Username. Please attempt to login again or sign up."
 }
 
+function displayLogin() {
+    topThree.innerHTML = ""
+    navBar.innerHTML = ""
+}
+
+function renderNavBar() {
+    navBar.innerHTML = `
+    <div class="nav-wrapper">
+    <div class="leftSide">
+        <div class="navLinkWrapper">
+            <a href="homePage.html">HomePage</a>
+        </div>
+        <div class="navLinkWrapper">
+            <a href="country.html">Country</a>
+        </div>
+        <div class="navLinkWrapper">
+            <a href="team.html">Team</a>
+        </div>
+        <div class="navLinkWrapper">
+            <a href="order.html">Order</a>
+        </div>
+    </div>
+    <div class="rightSide">
+        <div class="login">
+            <div class="rightLinkWrapper">
+                <a href="Login.html">Login</a>
+            </div>
+        </div>
+    </div>
+</div>`
+}
+
+displayLogin()
 // showTeams()
 // showCountries()
