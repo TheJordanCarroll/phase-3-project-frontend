@@ -13,56 +13,14 @@ const errorMessage = document.querySelector(".error-message")
 const SignupButton = document.getElementById("signup-form-submit")
 let countryId = 1
 let currentUser
+let currentUserId
+let newUser
 
 // Event Handling //
 countriesPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)})
-// queensPage.addEventListener("click", e => {getSingleQueen(e.target.dataset.id)})
-// queensPage.addEventListener("click", handleClick)
-
-function queenGifClick(e){
-    console.log(e.target.class)
-    if (e.target.class === "rendered-queen"){
-        const queenId = e.target.dataset.id
-        getSingleQueen(queenId)
-    }
-}
-
 loginButton.addEventListener("click", validateUsername)
-
-function validateUsername(e) {
-    e.preventDefault();
-    const username = loginForm.username.value;
-
-    fetch("http://localhost:3000/users") 
-    .then(response => response.json())
-    .then(data => data.forEach(element => element.username === username ? retrieveCurrentUser(element) : showErrorMessage()))
-}
-
 SignupButton.addEventListener("click", signupUsername)
 
-function signupUsername(e) {
-    e.preventDefault();
-    const newUsername = loginForm.username.value;
-
-    fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username: newUsername})
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-}
-
-function retrieveCurrentUser(element) {
-    currentUser = element
-    console.log(currentUser)
-}
-
-function showErrorMessage() {
-    errorMessage.innerText = "Invalid Username. Please attempt to login again or sign up."
-}
 
 // Fetch/Network Requests //
 function showTeams() {
@@ -114,11 +72,35 @@ teamInfo.append(teamGif)
 teamInfo.append(teamPar)
 teamPage.append(teamInfo)
 teamGif.addEventListener('click', queenGifClick)
-console.log(teamGif)
 countriesPage.innerHTML = ""
 queensPage.innerHTML = ""
 landingPage.innerHTML = ""
 }}
+
+function validateUsername(e) {
+    e.preventDefault();
+    const username = loginForm.username.value;
+
+    fetch("http://localhost:3000/users") 
+    .then(response => response.json())
+    .then(data => data.forEach(element => element.username === username ? retrieveCurrentUser(element) : showErrorMessage()))
+}
+
+function signupUsername(e) {
+    e.preventDefault();
+    const newUser = loginForm.username.value;
+
+    fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: newUser })
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+}
+
 
 // Manipulating the DOM //
 function showAllQueens(e) {
@@ -157,6 +139,7 @@ function addQueenShowSection(singleQueen) {
 }
 
 function showAllTeams(e) {
+    // if (parseInt(e.user_id) === parseInt(currentUser)) {
     let teamDiv = document.createElement("div")
     teamDiv.className = "card"
     let imgDiv = document.createElement("img")
@@ -175,25 +158,42 @@ function showAllTeams(e) {
     bodyDiv.append(headingDiv, buttonDiv)
     teamDiv.append(imgDiv, bodyDiv)
     landingPage.append(teamDiv)
+    // }
 }
 
 function teamButtonClick(e) {
-    console.log("teamButtonClick")
     getContract(e.target.dataset.id)
 }
 
 function queenGifClick(e){
-    // console.log(e.target.class)
     if (e.target.class === "rendered-queen"){
         const queenId = e.target.dataset.id
         getSingleQueen(queenId)
     }
 }
-// document.ready(function(){
-//     const button = document.querySelector(".team-button")
-//     button.bind("click", function(e){
-//         getContract(e.id)
-//     })
-// })
+
+function queenGifClick(e){
+    if (e.target.class === "rendered-queen"){
+        const queenId = e.target.dataset.id
+        getSingleQueen(queenId)
+    }
+}
+
+function retrieveCurrentUser(element) {
+    currentUser = element
+    getCurrentUserTeams(currentUser)
+}
+
+function getCurrentUserTeams(currentUser) {
+    console.log(currentUser)
+    fetch("http://localhost:3000/teams") 
+    .then(response => response.json())
+    .then(data => data.forEach(element => element.user_id === currentUser.id ? showAllTeams(element) : ""))
+}
+
+function showErrorMessage() {
+    errorMessage.innerText = "Invalid Username. Please attempt to login again or sign up."
+}
+
 // showTeams()
 // showCountries()
