@@ -14,6 +14,9 @@ const signupButton = document.getElementById("signup-form-submit")
 const mainHolder = document.getElementById("main-holder")
 const topThree = document.querySelector(".top-3-form")
 const navBar = document.querySelector(".nav-wrapper")
+const queensNav = document.querySelector(".queens-nav")
+// const countriesbtn = document.querySelector("#countries-btn")
+// console.log(countriesbtn)
 let countryId = 1
 let currentUser
 let currentUserId
@@ -26,10 +29,17 @@ signupButton.addEventListener("click", signupUsername)
 
 
 // Fetch/Network Requests //
+
 function showTeams() {
     fetch("http://localhost:3000/teams") 
     .then(response => response.json())
     .then(data => data.forEach(element => showAllTeams(element)))
+}
+
+function queensIndex() {
+    fetch(`http://localhost:3000/queens/`) 
+    .then(response => response.json())
+    .then(data => data.forEach(element => showAllQueens(element)))
 }
 
 function showCountries() {
@@ -112,28 +122,32 @@ function showAllQueens(e) {
     span.src = e.gif
     span.dataset.id = e.id
     gifDiv.addEventListener('click', queenGifClick)
-    countriesPage.remove()
+    countriesPage.innerHTML = ""
     gifDiv.append(span)
     queensPage.append(gifDiv)
     landingPage.innerHTML = ""
+    queenContainer.innerHTML = ""
 }
 
 function showAllCountries(e) {
     let span = document.createElement("img")
     span.src = e.image
     span.dataset.id = e.id
+    queensPage.innerHTML = ""
     countriesPage.append(span)
 }
 
 function addQueenShowSection(singleQueen) {
     queenContainer.innerHTML = `
     <h2 class="queen-name">Name: ${singleQueen.name}</h2>
-    <img class="queen-image" src=${singleQueen.grid_image} alt=${singleQueen.name} />
+    <img class="queen-image" src=${singleQueen.grid_image} alt=${singleQueen.name} data-id=${singleQueen.id}/>
+    <p class="queen-comments">${singleQueen.comments.content}</p> 
     <h3 class="country-name">Show: ${singleQueen.country.name}</h3>
     <h3 class="season-name">Season: ${singleQueen.season}</h3>
     <a class="queen-instagram" href="${singleQueen.instagram}">Instagram</a>
     <a class="queen-twitter" href="${singleQueen.twitter}">Twitter</a>
     `
+    
     countriesPage.innerHTML = ""
     queensPage.innerHTML = ""
     teamPage.innerHTML = ""
@@ -191,8 +205,10 @@ function getCurrentUserTeams(currentUser) {
     fetch("http://localhost:3000/teams") 
     .then(response => response.json())
     .then(data => data.forEach(element => element.user_id === currentUser.id ? showAllTeams(element) : ""))
+    navBar.innerHTML = ""
     renderNavBar()
     mainHolder.innerHTML = ""
+    queensPage.innerHTML = ""
 }
 
 function showErrorMessage() {
@@ -205,32 +221,33 @@ function displayLogin() {
 }
 
 function renderNavBar() {
-    navBar.innerHTML = `
-    <div class="nav-wrapper">
-    <div class="leftSide">
-        <div class="navLinkWrapper">
-            <a href="homePage.html">HomePage</a>
-        </div>
-        <div class="navLinkWrapper">
-            <a href="country.html">Country</a>
-        </div>
-        <div class="navLinkWrapper">
-            <a href="team.html">Team</a>
-        </div>
-        <div class="navLinkWrapper">
-            <a href="order.html">Order</a>
-        </div>
-    </div>
-    <div class="rightSide">
-        <div class="login">
-            <div class="rightLinkWrapper">
-                <a href="Login.html">Login</a>
-            </div>
-        </div>
-    </div>
-</div>`
+   let homebtn = document.createElement("button")
+   let buildTeambtn = document.createElement("button")
+   let coutriesbtn = document.createElement("button")
+   let queenbtn = document.createElement("button")
+   let logoutbtn = document.createElement("button")
+
+   homebtn.className = "home-btn"
+   homebtn.textContent = "Home"
+   buildTeambtn.className = "buildteam-btn"
+   buildTeambtn.textContent = "Buld a Team"
+   coutriesbtn.className = "countries-btn"
+   coutriesbtn.textContent = "Countries"
+   queenbtn.className = "queen-btn"
+   queenbtn.innerText = "Queens"
+   logoutbtn.className = "logout-btn"
+   logoutbtn.innerText = "LogOut"
+
+   navBar.append(homebtn)
+   navBar.append(buildTeambtn)
+   navBar.append(coutriesbtn)
+   navBar.append(queenbtn)
+   navBar.append(logoutbtn)
+   coutriesbtn.addEventListener("click", showCountries)
+   queenbtn.addEventListener("click", queensIndex)
+   homebtn.addEventListener("click", e => {getCurrentUserTeams(currentUser)})
 }
 
 displayLogin()
-// showTeams()
-// showCountries()
+
+
