@@ -15,6 +15,7 @@ const mainHolder = document.getElementById("main-holder")
 const topThree = document.querySelector(".top-3-form")
 const navBar = document.querySelector(".nav-wrapper")
 const queensNav = document.querySelector(".queens-nav")
+
 // const countriesbtn = document.querySelector("#countries-btn")
 // console.log(countriesbtn)
 let countryId = 1
@@ -141,17 +142,52 @@ function addQueenShowSection(singleQueen) {
     queenContainer.innerHTML = `
     <h2 class="queen-name">Name: ${singleQueen.name}</h2>
     <img class="queen-image" src=${singleQueen.grid_image} alt=${singleQueen.name} data-id=${singleQueen.id}/>
-    <p class="queen-comments">${singleQueen.comments.content}</p> 
     <h3 class="country-name">Show: ${singleQueen.country.name}</h3>
     <h3 class="season-name">Season: ${singleQueen.season}</h3>
     <a class="queen-instagram" href="${singleQueen.instagram}">Instagram</a>
     <a class="queen-twitter" href="${singleQueen.twitter}">Twitter</a>
+    <h3>Comments</h3>
+    <div class="queen-comments" ></div>
+    <form id="comment-form" >
+        <textarea placeholder='Add Your Comment'></textarea>
+        <div class="btn">
+            <input type="submit" value='Post'>
+        </div>
+    </form>
     `
+    let queenCommentsDiv = document.querySelector(".queen-comments")
     
+    let queenComments = singleQueen.comments.forEach(comment => {
+        const p = document.createElement('p')
+        p.textContent = comment.content
+        p.className = "queen-comment"
+        queenCommentsDiv.append(p)
+    })
     countriesPage.innerHTML = ""
     queensPage.innerHTML = ""
     teamPage.innerHTML = ""
     landingPage.innerHTML = ""
+
+    const commentForm = document.querySelector("#comment-form")
+    commentForm.addEventListener("submit", handleCommentForm)
+    console.log(singleQueen.id, "queen id")
+    console.log(currentUser.id, "user")
+    function handleCommentForm(e) {
+        e.preventDefault()
+        const newComment = e.target[0].value
+        const commentP = document.createElement("p")
+        commentP.textContent = newComment
+        queenCommentsDiv.append(commentP)
+        fetch('http://localhost:3000/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+                body: JSON.stringify({ content: newComment, queen_id: parseInt(singleQueen.id), user_id: parseInt(currentUser.id)})
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+    }
 }
 
 function showAllTeams(e) {
