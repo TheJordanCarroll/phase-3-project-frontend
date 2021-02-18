@@ -43,15 +43,26 @@ function showTeams() {
 }
 
 function queensIndex() {
+    if (!threeFormContainer.classList.contains("hidden")) {
+        threeFormContainer.classList.toggle("hidden")
+    }
     fetch(`http://localhost:3000/queens/`) 
     .then(response => response.json())
     .then(data => data.forEach(element => showAllQueens(element)))
 }
 
 function showCountries() {
+    if (!threeFormContainer.classList.contains("hidden")) {
+        threeFormContainer.classList.toggle("hidden")
+    }
     fetch("http://localhost:3000/countries") 
     .then(response => response.json())
-    .then(data => data.forEach(element => showAllCountries(element)))
+    .then(data => {
+        countrySelector.innerHTML = ""
+        data.forEach(element => {
+        showAllCountries(element)
+    })
+})
 }
 
 function selectCountry(countryId) {
@@ -128,7 +139,9 @@ function selectCountryTwo(countryId) {
 function accessSelectedCountryQueens2(e) {
     fetch(`http://localhost:3000/queens/`) 
     .then(response => response.json())
-    .then(data => data.forEach(element => element.country_id === e.id ? showAllQueensTwo(element) : ""))
+    .then(data => {
+        threeFormContainer.classList.toggle("hidden")
+        data.forEach(element => element.country_id === e.id ? showAllQueensTwo(element) : "")})
 }
 
 
@@ -257,6 +270,9 @@ function retrieveCurrentUser(element) {
 }
 
 function getCurrentUserTeams(currentUser) {
+    if (!threeFormContainer.classList.contains("hidden")) {
+        threeFormContainer.classList.toggle("hidden")
+    }
     console.log(currentUser)
     fetch("http://localhost:3000/teams") 
     .then(response => response.json())
@@ -273,7 +289,8 @@ function showErrorMessage() {
 }
 
 function displayLogin() {
-    threeFormContainer.innerHTML = ""
+    // threeFormContainer.innerHTML = ""
+    // threeFormContainer.classList.toggle("hidden")
     navBar.innerHTML = ""
 }
 
@@ -309,7 +326,12 @@ function renderNavBar() {
 function buildATeam(){
     fetch("http://localhost:3000/countries") 
     .then(response => response.json())
-    .then(data => data.forEach(element => displayAllCountries(element)))
+    .then(data => {
+        countriesPage.innerHTML = ""
+        data.forEach(element => {
+        displayAllCountries(element)
+        })
+    })
     
     // threeFormContainer.innerHTML = `
     //     <form class="top-3-form" action="http://localhost:3000/teams/:id"> 
@@ -379,7 +401,6 @@ function displayAllCountries(element) {
 // label.htmlFor = "queens"
 
 function showAllQueensTwo(e) {
-    debugger
     // renderTopThreeForm()
     // const select1 = document.createElement("select")
     // select1.name = "first-queen"
@@ -393,13 +414,18 @@ function showAllQueensTwo(e) {
     // const label = document.createElement("label")
     // label.innerText = "Choose your top three queens:"
     // label.htmlFor = "queens"
-
-    let queenOption = document.createElement("option")
-    queenOption.value = e.id
-    queenOption.textContent = e.name
-    firstQueen.append(queenOption)
-    secondQueen.append(queenOption)
-    thirdQueen.append(queenOption)
+    let queenOption1 = document.createElement("option")
+    queenOption1.value = e.id
+    queenOption1.textContent = e.name
+    let queenOption2 = document.createElement("option")
+    queenOption2.value = e.id
+    queenOption2.textContent = e.name
+    let queenOption3 = document.createElement("option")
+    queenOption3.value = e.id
+    queenOption3.textContent = e.name
+    firstQueen.append(queenOption1)
+    secondQueen.append(queenOption2)
+    thirdQueen.append(queenOption3)
     // threeFormContainer.appendChild(label).appendChild(select1)
 
     // firstQueen.appendChild(queenOption)
