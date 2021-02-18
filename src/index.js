@@ -16,16 +16,15 @@ const navBar = document.querySelector(".nav-wrapper")
 const queensNav = document.querySelector(".queens-nav")
 const threeFormContainer = document.querySelector(".top-three-form-container")
 const countrySelector = document.querySelector(".country-selector")
-const firstQueen = document.querySelector("#first-queen")
-const secondQueen = document.querySelector("#second-queen")
-const thirdQueen = document.querySelector("#third-queen")
-
-// const countriesbtn = document.querySelector("#countries-btn")
-// console.log(countriesbtn)
+const firstQueen = document.querySelector("#firstqueen")
+const secondQueen = document.querySelector("#secondqueen")
+const thirdQueen = document.querySelector("#thirdqueen")
+const topThreesubmit = document.querySelector(".top-3-form")
 let countryId = 1
 let currentUser
 let currentUserId
 let newUser
+let newteamId
 
 // Event Handling //
 countriesPage.addEventListener("click", e => {selectCountry(e.target.dataset.id)})
@@ -95,7 +94,7 @@ let teamInfo = document.createElement("div")
 let teamGif = document.createElement("img")
 let teamPar = document.createElement("p")
 teamGif.class = "rendered-queen"
-teamPar.innerText = element.Queen
+teamPar.innerText = element.queen.name
 teamGif.src = element.queen.gif
 teamGif.dataset.id = element.queen.id
 teamInfo.append(teamGif)
@@ -127,7 +126,7 @@ function signupUsername(e) {
         body: JSON.stringify({ username: newUser })
     })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => retrieveCurrentUser(data))
 }
 
 function selectCountryTwo(countryId) {
@@ -223,8 +222,41 @@ function addQueenShowSection(singleQueen) {
     }
 }
 
+
+topThreesubmit.addEventListener("submit", createTeam)
+
+function createTeam(e) {
+    e.preventDefault()
+    debugger
+    let firstChosenQueenId = e.target.firstqueen.value
+    let secondChosenQueenId = e.target.secondqueen.value
+    let thirdChosenQueenId = e.target.thirdqueen.value
+    let newTeamName = e.target.teamname.value
+    let newTeamImage = e.target.teamimage.value
+    
+    fetch('http://localhost:3000/teams', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: newTeamName, image: newTeamImage, user_id: currentUser.id, country_id: countryId })
+        })
+        .then(response => response.json())
+        .then(team => {
+            fetch('http://localhost:3000/contracts', {
+                method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ team_id: team.id, queen_id: [parseInt(firstChosenQueenId), parseInt(secondChosenQueenId), parseInt(thirdChosenQueenId)]})
+            })
+            .then(res => res.json())
+            .then(contract => getCurrentUserTeams(team.user))
+        })
+}
+    
 function showAllTeams(e) {
-    // if (parseInt(e.user_id) === parseInt(currentUser)) {
+    let currentTeamId = e.id
     let teamDiv = document.createElement("div")
     teamDiv.className = "card"
     let imgDiv = document.createElement("img")
@@ -243,7 +275,6 @@ function showAllTeams(e) {
     bodyDiv.append(headingDiv, buttonDiv)
     teamDiv.append(imgDiv, bodyDiv)
     landingPage.append(teamDiv)
-    // }
 }
 
 function teamButtonClick(e) {
@@ -273,7 +304,6 @@ function getCurrentUserTeams(currentUser) {
     if (!threeFormContainer.classList.contains("hidden")) {
         threeFormContainer.classList.toggle("hidden")
     }
-    console.log(currentUser)
     fetch("http://localhost:3000/teams") 
     .then(response => response.json())
     .then(data => data.forEach(element => element.user_id === currentUser.id ? showAllTeams(element) : ""))
@@ -289,8 +319,6 @@ function showErrorMessage() {
 }
 
 function displayLogin() {
-    // threeFormContainer.innerHTML = ""
-    // threeFormContainer.classList.toggle("hidden")
     navBar.innerHTML = ""
 }
 
@@ -332,28 +360,6 @@ function buildATeam(){
         displayAllCountries(element)
         })
     })
-    
-    // threeFormContainer.innerHTML = `
-    //     <form class="top-3-form" action="http://localhost:3000/teams/:id"> 
-    //         <label for="queens">Choose your top three queens:</label>
-    //         <select id="first-queen" name="first-queen">
-    //             <option value="1">Queen</option>
-    //             <option value="2">Queen</option>
-    //             <option value="3">Queen</option>
-    //         </select>
-    //         <select id="second-queen" name="second-queen">
-    //             <option value="4">Queen</option>
-    //             <option value="5">Queen</option>
-    //             <option value="6">Queen</option>
-    //         </select>
-    //         <select id="third-queen" name="third-queen">
-    //             <option value="7">Queen</option>
-    //             <option value="8">Queen</option>
-    //             <option value="9">Queen</option>
-    //         </select>
-    //         <input type="submit" value="Submit">
-    //     </form>
-    //     `
 }
 
 function displayAllCountries(element) {
@@ -366,54 +372,8 @@ function displayAllCountries(element) {
     landingPage.innerHTML = ""
 }
 
- 
-    // var values = ["dog", "cat", "parrot", "rabbit"];
-   
-    // var select = document.createElement("select");
-    // select.name = "pets";
-    // select.id = "pets"
-   
-    // for (const val of values) {
-    //   var option = document.createElement("option");
-    //   option.value = val;
-    //   option.text = val.charAt(0).toUpperCase() + val.slice(1);
-    //   select.appendChild(option);
-    // }
-   
-    // var label = document.createElement("label");
-    // label.innerHTML = "Choose your pets: "
-    // label.htmlFor = "pets";
-   
-    // document.getElementById("container").appendChild(label).appendChild(select);
-//   }
-
-// const select1 = document.createElement("select")
-// select1.name = "first-queen"
-// select1.id = "first-queen"
-// const select2 = document.createElement("select")
-// select2.name = "second-queen"
-// select2.id = "second-queen"
-// const select3 = document.createElement("select")
-// select3.name = "third-queen"
-// select3.id = "third-queen"
-// const label = document.createElement("label")
-// label.innerText = "Choose your top three queens:"
-// label.htmlFor = "queens"
 
 function showAllQueensTwo(e) {
-    // renderTopThreeForm()
-    // const select1 = document.createElement("select")
-    // select1.name = "first-queen"
-    // select1.id = "first-queen"
-    // const select2 = document.createElement("select")
-    // select2.name = "second-queen"
-    // select2.id = "second-queen"
-    // const select3 = document.createElement("select")
-    // select3.name = "third-queen"
-    // select3.id = "third-queen"
-    // const label = document.createElement("label")
-    // label.innerText = "Choose your top three queens:"
-    // label.htmlFor = "queens"
     let queenOption1 = document.createElement("option")
     queenOption1.value = e.id
     queenOption1.textContent = e.name
@@ -426,16 +386,7 @@ function showAllQueensTwo(e) {
     firstQueen.append(queenOption1)
     secondQueen.append(queenOption2)
     thirdQueen.append(queenOption3)
-    // threeFormContainer.appendChild(label).appendChild(select1)
 
-    // firstQueen.appendChild(queenOption)
-    // secondQueen.appendChild(queenOption)
-    // thirdQueen.appendChild(queenOption)
-    // threeFormContainer.append(firstQueen)
-    // threeFormContainer.append(secondQueen)
-    // threeFormContainer.append(thirdQueen)
-    // <option value="e.dataset.id">e.name</option>
-             
     let span = document.createElement("img")
     let gifDiv = document.createElement("div")
     span.class = "rendered-queen"
@@ -450,29 +401,6 @@ function showAllQueensTwo(e) {
     countrySelector.innerHTML = ""
 }
 
-// function renderTopThreeForm() {
-//     // let queenOption = document.createElement("option")
-//     // queenOption.value = e.id
-//     // queenOption.textContent = e.name
-//     // firstQueen.innerText = queenOption
-//     // secondQueen.innerText = queenOption
-//     // thirdQueen.innerText = queenOption
-//     threeFormContainer.innerHTML = `
-//     <form class="top-3-form" action="http://localhost:3000/teams/:id"> 
-//         <label for="queens">Choose your top three queens:</label>
-//             <select id="first-queen" name="first-queen">
-                
-//             </select>
-//             <select id="second-queen" name="second-queen">
-
-//             </select>
-//             <select id="third-queen" name="third-queen">
-
-//             </select>
-//         <input type="submit" value="Submit">
-//     </form>
-//     `
-// }
 displayLogin()
 
 
