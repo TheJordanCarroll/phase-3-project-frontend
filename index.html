@@ -59,38 +59,35 @@
             <div class = "countries">
              
             </div>
+            <div class="top-three-form-container">
+                <form class="top-3-form" action="http://localhost:3000/teams/:id"> 
+                    <label for="queens">Choose your top three queens:</label>
+                        <select id="first-queen" name="first-queen">
+                            
+                        </select>
+                        <select id="second-queen" name="second-queen">
+
+                        </select>
+                        <select id="third-queen" name="third-queen">
+
+                        </select>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
             <div class="queens">
                             
             </div>
             <div class="queen-container">
-    
+
+            </div>
+            <div class="country-selector">
+
+            </div>
+        </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
-    </div>
-            <form class="top-3-form" action="http://localhost:3000/teams/:id"> 
-                <label for="queens">Choose your top three queens:</label>
-                <select id="first-queen" name="first-queen">
-                    <option value="1">queen.name</option>
-                    <option value="2">queen.name</option>
-                    <option value="3">queen.name</option>
-                </select>
-                <select id="second-queen" name="second-queen">
-                    <option value="4">queen.name</option>
-                    <option value="5">queen.name</option>
-                    <option value="6">queen.name</option>
-                    <!-- this will ideally have the first queen removed dynamically -->
-                </select>
-                <select id="third-queen" name="third-queen">
-                    <option value="7">queen.name</option>
-                    <option value="8">queen.name</option>
-                    <option value="9">queen.name</option>
-                    <!-- this will ideally have the first and second queen removed dynamically -->
-                </select>
-                <input type="submit" value="Submit">
-            </form>
-        </div>
 </html>
