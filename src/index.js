@@ -379,26 +379,28 @@ function displayAllCountries(element) {
 // label.htmlFor = "queens"
 
 function showAllQueensTwo(e) {
+    debugger
     // renderTopThreeForm()
-    const select1 = document.createElement("select")
-    select1.name = "first-queen"
-    select1.id = "first-queen"
-    const select2 = document.createElement("select")
-    select2.name = "second-queen"
-    select2.id = "second-queen"
-    const select3 = document.createElement("select")
-    select3.name = "third-queen"
-    select3.id = "third-queen"
-    const label = document.createElement("label")
-    label.innerText = "Choose your top three queens:"
-    label.htmlFor = "queens"
+    // const select1 = document.createElement("select")
+    // select1.name = "first-queen"
+    // select1.id = "first-queen"
+    // const select2 = document.createElement("select")
+    // select2.name = "second-queen"
+    // select2.id = "second-queen"
+    // const select3 = document.createElement("select")
+    // select3.name = "third-queen"
+    // select3.id = "third-queen"
+    // const label = document.createElement("label")
+    // label.innerText = "Choose your top three queens:"
+    // label.htmlFor = "queens"
+
     let queenOption = document.createElement("option")
     queenOption.value = e.id
     queenOption.textContent = e.name
-    select1.appendChild(queenOption)
-    select2.appendChild(queenOption)
-    select3.appendChild(queenoption)
-    threeFormContainer.appendChild(label).appendChild(select1)
+    firstQueen.append(queenOption)
+    secondQueen.append(queenOption)
+    thirdQueen.append(queenOption)
+    // threeFormContainer.appendChild(label).appendChild(select1)
 
     // firstQueen.appendChild(queenOption)
     // secondQueen.appendChild(queenOption)
