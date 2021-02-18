@@ -272,13 +272,32 @@ function showAllTeams(e) {
     buttonDiv.textContent = "View Team"
     buttonDiv.dataset.id = e.id
     buttonDiv.addEventListener('click', teamButtonClick)
-    bodyDiv.append(headingDiv, buttonDiv)
+    let deleteButtonDiv = document.createElement("button")
+    deleteButtonDiv.className = "btn btn-primary delete-button"
+    deleteButtonDiv.textContent = "Delete Team"
+    deleteButtonDiv.dataset.id = e.id 
+    deleteButtonDiv.addEventListener('click', handleDeleteClick)
+    bodyDiv.append(headingDiv, buttonDiv, deleteButtonDiv)
     teamDiv.append(imgDiv, bodyDiv)
     landingPage.append(teamDiv)
 }
 
 function teamButtonClick(e) {
     getContract(e.target.dataset.id)
+}
+
+function handleDeleteClick(e){
+    console.log(e)
+    if (e.target.className === "btn btn-primary delete-button"){
+      const deleteTeamId = e.target.dataset.id
+      deleteTeam(deleteTeamId).then(getCurrentUserTeams(currentUser))
+    }
+}
+
+function deleteTeam(id){
+    return fetch(`http://localhost:3000/teams/${id}`, {
+      method: "DELETE"
+    })
 }
 
 function queenGifClick(e){
