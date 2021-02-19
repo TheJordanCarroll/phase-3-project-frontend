@@ -21,6 +21,7 @@ const secondQueen = document.querySelector("#secondqueen")
 const thirdQueen = document.querySelector("#thirdqueen")
 const topThreesubmit = document.querySelector(".top-3-form")
 const myTeamsHeader = document.querySelector(".my-teams-header")
+let currentPage = "login page"
 
 let countryId = 1
 let currentUser
@@ -44,18 +45,28 @@ function showTeams() {
 }
 
 function queensIndex() {
+    if (currentPage !== "queensIndex") {
+    addHiddenClass()
+    removeTeamShow()
+    currentPage = "queensIndex"
     if (!threeFormContainer.classList.contains("hidden")) {
         threeFormContainer.classList.toggle("hidden")
     }
     fetch(`http://localhost:3000/queens/`) 
     .then(response => response.json())
     .then(data => data.forEach(element => showAllQueens(element)))
-}
+}}
 
 function showCountries() {
-    if (!threeFormContainer.classList.contains("hidden")) {
-        threeFormContainer.classList.toggle("hidden")
-    }
+    if (currentPage !== "countriesPage") {
+        currentPage = "countriesPage"
+    addHiddenClass()
+    removeTeamShow()
+    countriesPage.classList.remove("hidden")
+    countriesPage.innerHTML = ""
+    // if (!threeFormContainer.classList.contains("hidden")) {
+    //     threeFormContainer.classList.toggle("hidden")
+    // }
     fetch("http://localhost:3000/countries") 
     .then(response => response.json())
     .then(data => {
@@ -64,7 +75,7 @@ function showCountries() {
         showAllCountries(element)
     })
 })
-}
+}}
 
 function selectCountry(countryId) {
     fetch(`http://localhost:3000/countries/${countryId}`) 
@@ -148,6 +159,7 @@ function accessSelectedCountryQueens2(e) {
 
 // Manipulating the DOM //
 function showAllQueens(e) {
+    addHiddenClass()
     let span = document.createElement("img")
     let queenNameP = document.createElement("p")
     // let breakSpace = document.createElement("br")
@@ -330,7 +342,7 @@ function showAllTeams(e) {
 }
 
 function teamButtonClick(e) {
-    getContract(e.target.dataset.id)
+        getContract(e.target.dataset.id)
 }
 
 function handleDeleteClick(e){
@@ -366,6 +378,12 @@ function retrieveCurrentUser(element) {
 }
 
 function getCurrentUserTeams(currentUser) {
+    console.log(currentPage)
+    if (currentPage !== "landingPage") {
+    addHiddenClass()
+    hideCountries()
+    removeTeamShow()
+    currentPage = "landingPage"
     if (!threeFormContainer.classList.contains("hidden")) {
         threeFormContainer.classList.toggle("hidden")
     }
@@ -380,7 +398,7 @@ function getCurrentUserTeams(currentUser) {
     queenContainer.innerHTML = ""
     mainHolder.innerHTML = ""
     queensPage.innerHTML = ""
-}
+}}
 
 function showErrorMessage() {
     errorMessage.innerText = "Invalid Username. Please attempt to login again or sign up."
@@ -415,6 +433,14 @@ function renderNavBar() {
    buildTeambtn.addEventListener("click", buildATeam)
 }
 
+function addHiddenClass() {
+    queenContainer.classList.add("hidden")
+}
+
+function hideCountries() {
+    countriesPage.classList.add("hidden")
+}
+
 function buildATeam(){
     fetch("http://localhost:3000/countries") 
     .then(response => response.json())
@@ -427,6 +453,8 @@ function buildATeam(){
 }
 
 function displayAllCountries(element) {
+    addHiddenClass()
+    removeTeamShow()
     let picture = document.createElement("img")
     picture.src = element.image
     picture.dataset.id = element.id
@@ -484,7 +512,8 @@ function winButtonClick(e) {
     if (newString === "Gigi Goode Jaida Essence Hall Crystal Methyd") {
     getContract(e.target.dataset.id)
     let winningImage = document.createElement("img")
-    winningImage.src = "https://filmdaily.co/wp-content/uploads/2020/06/Jaida-Essence-Rupaul-Lede.jpg"
+    winningImage.src = "https://pbs.twimg.com/tweet_video_thumb/DYEYqFEXcAAdWA9.jpg"
+    winningImage.className = "winning-image"
    teamPage.append(winningImage)
 } else {
     getContract(e.target.dataset.id)
@@ -494,8 +523,11 @@ function teamButtonClick(e) {
     // teamPage.insertAdjacentHTML("beforebegin",`<buttton class = 'btn btn-primary team-button' data-id = ${e.id}> View Winner</buttton>`)
     // console.log(teamPage)
     // let findButton = document.querySelector(".team-button")
+    if (currentPage !== "teamButtonClickPage") {
+        currentPage = "teamButtonClickPage"
     let winningDiv = document.createElement("button")
     winningDiv.className = "btn btn-primary team-button" 
+    winningDiv.id = "winning-buttonn"
     winningDiv.textContent = "View Winner"
     winningDiv.dataset.id = e.id
     let mainTeamContainer = document.querySelector(".main-team-page-container")
@@ -503,8 +535,16 @@ function teamButtonClick(e) {
     winningDiv.addEventListener('click', winButtonClick)
     // landingPage.append(winningDiv)
     getContract(e.target.dataset.id)
-}
+}}
 
 displayLogin()
+
+function removeTeamShow() {
+    // winningButton = document.querySelector(".btn btn-primary team-button")
+    winningButton = teamPage.nextSibling
+    console.log(winningButton)
+    if (winningButton){winningButton.remove()}
+    teamPage.innerHTML = ""
+}
 
 
