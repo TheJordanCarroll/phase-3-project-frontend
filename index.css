@@ -21,6 +21,7 @@ body {
 .queens {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 1em;
 }
 
 .box {
@@ -348,7 +349,7 @@ img.displayed-country {
 }
 
 .view-team-button-class {
-    width: 40%;
+    width: 100%;
     padding: 7px;
     border: none;
     border-radius: 5px;
@@ -364,7 +365,7 @@ img.displayed-country {
 }
 
 .delete-button-class {
-    width: 40%;
+    width: 100%;
     padding: 7px;
     border: none;
     border-radius: 5px;
@@ -405,5 +406,37 @@ img.displayed-country {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+}
+
+.queen-gif {
+    margin-bottom: 1.5em;
+}
+
+.queen-p {
+    text-align: center;
+}
+
+.team-picture-class {
+    text-align: center;
+}
+
+.all-teams-picture-class {
+    text-align: center;
+}
+
+.queen-name {
+    text-align: center;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.team-building-div {
+    margin-bottom: 1.5em;
+}
+
+.team-building-p {
     text-align: center;
 }

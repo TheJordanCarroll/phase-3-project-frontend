@@ -151,6 +151,7 @@ function showAllQueens(e) {
     let span = document.createElement("img")
     let queenNameP = document.createElement("p")
     // let breakSpace = document.createElement("br")
+    queenNameP.className = "queen-p"
     let gifDiv = document.createElement("div")
     gifDiv.className = "queen-gif"
     span.class = "rendered-queen"
@@ -174,6 +175,7 @@ function showAllCountries(e) {
     span.dataset.id = e.id
     span.className = "first-rendered-countries"
     let pictureDescription = document.createElement("p")
+    pictureDescription.className = "all-teams-picture-class"
     pictureDescription.innerText = e.name
     countriesPage.append(span, pictureDescription)
     queenContainer.innerHTML = ""
@@ -184,7 +186,7 @@ function showAllCountries(e) {
 function addQueenShowSection(singleQueen) {
     // threeFormContainer.innerHTML = ""
     queenContainer.innerHTML = `
-    <h3 class="queen-name">Name: ${singleQueen.name}</h3>
+    <h3 class="queen-name">${singleQueen.name}</h3>
     <img class="queen-image" src=${singleQueen.grid_image} alt=${singleQueen} data-id=${singleQueen.id}/>
     <h3 class="country-name">Show: ${singleQueen.country.name}</h3>
     <h3 class="season-name">Season: ${singleQueen.season}</h3>
@@ -299,6 +301,7 @@ function showAllTeams(e) {
     let currentTeamId = e.id
     let teamDiv = document.createElement("div")
     teamDiv.className = "card"
+    teamDiv.dataset.id = e.id
     let imgDiv = document.createElement("img")
     imgDiv.className = "card-img-top"
     imgDiv.src = e.image
@@ -331,16 +334,14 @@ function teamButtonClick(e) {
 }
 
 function handleDeleteClick(e){
+    let deleteTeamId = e.target.dataset.id
     if (e.target.className === "delete-button-class"){
-      const deleteTeamId = e.target.dataset.id
-      deleteTeam(deleteTeamId).then(landingPage.innerHTML = "").then(getCurrentUserTeams(currentUser))
-    }
-}
-
-function deleteTeam(id){
-    fetch(`http://localhost:3000/teams/${id}`, {
+      fetch(`http://localhost:3000/teams/${deleteTeamId}`, {
       method: "DELETE"
     })
+    let card = landingPage.querySelector(`[data-id='${deleteTeamId}']`)
+    card.remove()
+    }
 }
 
 function queenGifClick(e){
@@ -426,6 +427,7 @@ function displayAllCountries(element) {
     picture.dataset.id = element.id
     picture.className = "displayed-country"
     let pictureDescription = document.createElement("p")
+    pictureDescription.className = "team-picture-class"
     pictureDescription.innerText = element.name
     countrySelector.append(picture, pictureDescription)
     queenContainer.innerHTML = ""
@@ -451,6 +453,8 @@ function showAllQueensTwo(e) {
     let span = document.createElement("img")
     let gifDiv = document.createElement("div")
     let queenNameP = document.createElement("p")
+    gifDiv.className = "team-building-div"
+    queenNameP.className = "team-building-p"
     span.class = "rendered-queen"
     span.src = e.gif
     span.dataset.id = e.id
