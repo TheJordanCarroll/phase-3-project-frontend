@@ -1,9 +1,12 @@
 /* Main */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
 body {
     /* margin: 0px; */
     height: 100%;
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
     display: grid;
     justify-items: center;
     align-items: center;
@@ -15,7 +18,7 @@ body {
     grid-template-columns: 1fr;
 }
 
-.queenContentwrapper {
+.queens {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
@@ -23,24 +26,27 @@ body {
 .box {
     width: 50%;
     height: 200px;
+    margin-bottom: 0px;
   }
 
-  .center {
+.center {
     display: block;
     margin-left: 50%;
     margin-right: 50%;
     width: 100%;
-  }
+}
   
-  img {
+img {
     width: 100%;
     height: 100%;
-  }
+}
 /* container */
 .nav-wrapper {
     display: flex;
     justify-content: space-between;
     padding: 38px;
+    margin-top: 0px;
+    margin-bottom: .5em;
 }
 
 .leftSide {
@@ -104,14 +110,16 @@ html {
 }
   
 #main-holder {
-    width: 50%;
-    height: 70%;
+    width: 30%;
+    height: 100%;
     display: grid;
     justify-items: center;
     align-items: center;
-    background-color: white;
-    border-radius: 7px;
-    /* box-shadow: 0px 0px 5px 2px black; */
+    background-color: lightgray;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    top:50px;
 }
   
 #login-error-msg-holder {
@@ -174,8 +182,228 @@ html {
 .hidden {
     display: none;
 }
-
+/* 
 img {
     max-height: 200px;
     max-width: 200px;
+} */
+.logo {
+    width: 30em;
+    position:relative; 
+    right:350px; 
+    bottom:30px;
+}
+
+#signup-form-submit {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em;
+}
+
+.home-btn {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em;
+}
+
+.buildteam-btn {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em; 
+}
+
+.countries-btn {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em; 
+}
+
+.queen-btn {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em;
+}
+
+#login-header {
+    margin: .5em;
+}
+
+.error-message {
+    background-color: #FF4D4D;
+    border-radius: 5px;
+    width: 80%;
+}
+
+.countries {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr 1fr; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.country-selector {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr 1fr; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.landing-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.my-teams-header {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: .5em;
+    background-color: lightgray;
+    /* border-radius: 10px; */
+    padding: .5em;
+    width: 50%;
+    text-align: center;
+}
+
+.build-team-header {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: .5em;
+    background-color: lightgray;
+    /* border-radius: 10px; */
+    padding: .5em;
+    width: 50%;
+    text-align: center; 
+}
+
+img.displayed-country {
+    max-height: 350px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.top-3-form {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+#top-three-form-submit {
+    width: 10%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.card {
+    margin-bottom: 1em;
+
+}
+
+.view-team-button-class {
+    width: 40%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.delete-button-class {
+    width: 40%;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    background-color: #3a3a3a;
+    cursor: pointer;
+    outline: none;
+    margin: .25em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.team-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 1em;
+}
+
+.queen-image {
+    max-height: 450px;
+    max-width: 450px;
+}
+
+.queen-container {
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-color: black;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+
+.first-rendered-countries {
+    max-height: 350px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }

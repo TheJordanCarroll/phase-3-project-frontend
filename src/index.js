@@ -20,6 +20,8 @@ const firstQueen = document.querySelector("#firstqueen")
 const secondQueen = document.querySelector("#secondqueen")
 const thirdQueen = document.querySelector("#thirdqueen")
 const topThreesubmit = document.querySelector(".top-3-form")
+const myTeamsHeader = document.querySelector(".my-teams-header")
+
 let countryId = 1
 let currentUser
 let currentUserId
@@ -147,13 +149,19 @@ function accessSelectedCountryQueens2(e) {
 // Manipulating the DOM //
 function showAllQueens(e) {
     let span = document.createElement("img")
+    let queenNameP = document.createElement("p")
+    // let breakSpace = document.createElement("br")
     let gifDiv = document.createElement("div")
+    gifDiv.className = "queen-gif"
     span.class = "rendered-queen"
     span.src = e.gif
     span.dataset.id = e.id
+    queenNameP.innerText = e.name
     gifDiv.addEventListener('click', queenGifClick)
     countriesPage.innerHTML = ""
     gifDiv.append(span)
+    gifDiv.append(queenNameP)
+    // gifDiv.append(breakSpace)
     queensPage.append(gifDiv)
     landingPage.innerHTML = ""
     queenContainer.innerHTML = ""
@@ -164,24 +172,29 @@ function showAllCountries(e) {
     let span = document.createElement("img")
     span.src = e.image
     span.dataset.id = e.id
-    countriesPage.append(span)
+    span.className = "first-rendered-countries"
+    let pictureDescription = document.createElement("p")
+    pictureDescription.innerText = e.name
+    countriesPage.append(span, pictureDescription)
     queenContainer.innerHTML = ""
     queensPage.innerHTML = ""
     landingPage.innerHTML = ""
 }
 
 function addQueenShowSection(singleQueen) {
+    // threeFormContainer.innerHTML = ""
     queenContainer.innerHTML = `
-    <h2 class="queen-name">Name: ${singleQueen.name}</h2>
+    <h3 class="queen-name">Name: ${singleQueen.name}</h3>
     <img class="queen-image" src=${singleQueen.grid_image} alt=${singleQueen} data-id=${singleQueen.id}/>
     <h3 class="country-name">Show: ${singleQueen.country.name}</h3>
     <h3 class="season-name">Season: ${singleQueen.season}</h3>
-    <a class="queen-instagram" href="${singleQueen.instagram}">Instagram</a>
-    <a class="queen-twitter" href="${singleQueen.twitter}">Twitter</a>
-    <h3>Comments</h3>
+    <a class="queen-instagram" href="${singleQueen.instagram}" target="_blank">Instagram</a>
+    <a class="queen-twitter" href="${singleQueen.twitter}" target="_blank">Twitter</a>
+    <h3>Notes:</h3>
     <div class="queen-comments" ></div>
     <form id="comment-form" >
-        <textarea placeholder='Add Your Comment'></textarea>
+        <textarea placeholder='Add a note...'></textarea>
+        <br>
         <div class="btn">
             <input type="submit" value='Post'>
         </div>
@@ -199,6 +212,7 @@ function addQueenShowSection(singleQueen) {
         const updateCommentForm = document.createElement("form")
         updateCommentForm.innerHTML = `
             <textarea placeholder='${comment.content}'></textarea>
+            <br>
             <div class="btn">
                 <input type="submit" value='Update' class="update-queen-comment" dataQueenId="${singleQueen.id}">
             </div>
@@ -208,8 +222,6 @@ function addQueenShowSection(singleQueen) {
 
     queenCommentsDiv.addEventListener("submit", (e) => {
             e.preventDefault()
-            // console.log(e)
-            // debugger
             fetch(`http://localhost:3000/comments/1}`, {
                 method: 'PATCH',
                 headers: {
@@ -256,7 +268,6 @@ topThreesubmit.addEventListener("submit", createTeam)
 
 function createTeam(e) {
     e.preventDefault()
-    debugger
     let firstChosenQueenId = e.target.firstqueen.value
     let secondChosenQueenId = e.target.secondqueen.value
     let thirdChosenQueenId = e.target.thirdqueen.value
@@ -297,16 +308,17 @@ function showAllTeams(e) {
     headingDiv.className = "card-title"
     headingDiv.textContent = e.name
     let buttonDiv = document.createElement("button")
-    buttonDiv.className = "btn btn-primary team-button" 
+    buttonDiv.className = "view-team-button-class" 
     buttonDiv.textContent = "View Team"
     buttonDiv.dataset.id = e.id
     buttonDiv.addEventListener('click', teamButtonClick)
+    let spacingBreak = document.createElement("br")
     let deleteButtonDiv = document.createElement("button")
-    deleteButtonDiv.className = "btn btn-primary delete-button"
+    deleteButtonDiv.className = "delete-button-class"
     deleteButtonDiv.textContent = "Delete Team"
     deleteButtonDiv.dataset.id = e.id 
     deleteButtonDiv.addEventListener('click', handleDeleteClick)
-    bodyDiv.append(headingDiv, buttonDiv, deleteButtonDiv)
+    bodyDiv.append(headingDiv, buttonDiv, spacingBreak, deleteButtonDiv)
     teamDiv.append(imgDiv, bodyDiv)
     landingPage.append(teamDiv)
     countrySelector.innerHTML = ""
@@ -319,7 +331,7 @@ function teamButtonClick(e) {
 }
 
 function handleDeleteClick(e){
-    if (e.target.className === "btn btn-primary delete-button"){
+    if (e.target.className === "delete-button-class"){
       const deleteTeamId = e.target.dataset.id
       deleteTeam(deleteTeamId).then(landingPage.innerHTML = "").then(getCurrentUserTeams(currentUser))
     }
@@ -377,7 +389,6 @@ function renderNavBar() {
    let buildTeambtn = document.createElement("button")
    let coutriesbtn = document.createElement("button")
    let queenbtn = document.createElement("button")
-   let logoutbtn = document.createElement("button")
 
    homebtn.className = "home-btn"
    homebtn.textContent = "Home"
@@ -387,14 +398,11 @@ function renderNavBar() {
    coutriesbtn.textContent = "Countries"
    queenbtn.className = "queen-btn"
    queenbtn.innerText = "Queens"
-   logoutbtn.className = "logout-btn"
-   logoutbtn.innerText = "LogOut"
 
    navBar.append(homebtn)
    navBar.append(buildTeambtn)
    navBar.append(coutriesbtn)
    navBar.append(queenbtn)
-   navBar.append(logoutbtn)
    coutriesbtn.addEventListener("click", showCountries)
    queenbtn.addEventListener("click", queensIndex)
    homebtn.addEventListener("click", e => {getCurrentUserTeams(currentUser)})
@@ -416,7 +424,10 @@ function displayAllCountries(element) {
     let picture = document.createElement("img")
     picture.src = element.image
     picture.dataset.id = element.id
-    countrySelector.append(picture)
+    picture.className = "displayed-country"
+    let pictureDescription = document.createElement("p")
+    pictureDescription.innerText = element.name
+    countrySelector.append(picture, pictureDescription)
     queenContainer.innerHTML = ""
     queensPage.innerHTML = ""
     landingPage.innerHTML = ""
@@ -439,12 +450,15 @@ function showAllQueensTwo(e) {
 
     let span = document.createElement("img")
     let gifDiv = document.createElement("div")
+    let queenNameP = document.createElement("p")
     span.class = "rendered-queen"
     span.src = e.gif
     span.dataset.id = e.id
+    queenNameP.innerText = e.name
     gifDiv.addEventListener('click', queenGifClick)
     countriesPage.innerHTML = ""
     gifDiv.append(span)
+    gifDiv.append(queenNameP)
     queensPage.append(gifDiv)
     landingPage.innerHTML = ""
     queenContainer.innerHTML = ""

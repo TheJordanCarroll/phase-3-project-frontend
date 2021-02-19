@@ -10,39 +10,14 @@
     </head>
     <body>
         <header class="box"> 
-            <img src="https://wwwimage-secure.cbsstatic.com/base/files/show_page/rdr_about_web_1400x440.jpg"  alt="Example image" class="center">
+            <img class="logo" src='./assets/images/logo.jpg'>
         </header>
         <div class="nav-wrapper">
-            <!-- <div class="leftSide">
-                <div class="navLinkWrapper">
-                    <a id="home">Home</a>
-                </div>
-                <div class="navLinkWrapper">
-                    <a id="build-a-team">Build a Team</a>
-                </div>
-                <div class="navLinkWrapper">
-                    <input type="button" value="countries" id="countries-btn">
-                </div> 
-                <div class="navLinkWrapper">
-                    <a id="queens-nav">Queens</a>
-                </div>
-            </div>
-            <div class="rightSide">
-                <div class="login">
-                    <div class="rightLinkWrapper">
-                        <a id="logout">Logout</a>
-                    </div>
-                </div>
-            </div> -->
+        
         </div>
         <div class="container">
             <main id="main-holder">
                 <h1 id="login-header">Login</h1>
-                
-                <div id="login-error-msg-holder">
-                  <p id="login-error-msg">Invalid Username. Please attempt to login again or sign up.</p>
-                </div>
-                
                 <form id="login-form">
                   <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username">
                   <input type="submit" value="Login" id="login-form-submit">
@@ -50,9 +25,11 @@
                   <p class="error-message"></p>
                 </form>
             </main>
+            <!-- <h3 class="my-teams-header">My Teams:</h3> -->
             <div class="landing-page">
-
+                
             </div>
+
             <div class="team-page">
                 
             </div>
@@ -61,7 +38,8 @@
             </div>
             <div class="top-three-form-container hidden">
                 <form class="top-3-form" action="http://localhost:3000/teams/:id"> 
-                    <label for="queens">Choose your top three queens:</label>
+                    <label for="queens" class="form-label">Choose your top three queens using the form below. If you'd like to learn more about a queen, click on their GIF below the form.</label>
+                    <br>
                         <select id="firstqueen" name="firstqueen">
                             
                         </select>
@@ -71,9 +49,11 @@
                         <select id="thirdqueen" name="thirdqueen">
 
                         </select>
+                    <br>
                     <input type="text" name="teamname" id="teamname" class="teamname" placeholder="Enter your team name...">
                     <input type="text" name="teamimage" id="teamimage" class="teamimage" placeholder="Paste an image URL...">
-                    <input type="submit" value="Submit">
+                    <br>
+                    <input type="submit" value="Submit" id="top-three-form-submit">
                 </form>
             </div>
             <div class="queens">
@@ -82,6 +62,7 @@
             <div class="queen-container">
 
             </div>
+            <!-- <h3 class="build-team-header">Click on one of the pictures below to build a team for that season.</h3> -->
             <div class="country-selector">
 
             </div>
