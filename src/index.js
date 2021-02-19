@@ -157,6 +157,7 @@ function showAllQueens(e) {
     queensPage.append(gifDiv)
     landingPage.innerHTML = ""
     queenContainer.innerHTML = ""
+    countrySelector.innerHTML = ""
 }
 
 function showAllCountries(e) {
@@ -191,9 +192,39 @@ function addQueenShowSection(singleQueen) {
     let queenComments = singleQueen.comments.forEach(comment => {
         const p = document.createElement('p')
         p.textContent = comment.content
+        p.dataset = comment.id
+        console.log(comment.id)
         p.className = "queen-comment"
-        queenCommentsDiv.append(p)
+        // event listener on an update comment button that responds to a click with the toggle. listen to a click to toggle, listen to a submit to patch.
+        const updateCommentForm = document.createElement("form")
+        updateCommentForm.innerHTML = `
+            <textarea placeholder='${comment.content}'></textarea>
+            <div class="btn">
+                <input type="submit" value='Update' class="update-queen-comment" dataQueenId="${singleQueen.id}">
+            </div>
+        `
+        queenCommentsDiv.append(p, updateCommentForm)
     })
+
+    queenCommentsDiv.addEventListener("submit", (e) => {
+            e.preventDefault()
+            // console.log(e)
+            // debugger
+            fetch(`http://localhost:3000/comments/1}`, {
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: e.target[0].value, user_id: currentUser, queen_id: singleQueen.id })
+            })
+            .then(response => response.json())
+            .then(updatedComment => {
+            const queenComment = document.querySelector('p.queen-comment')
+            queenComment.textContent = updatedComment.content
+            })
+    })
+
+// patch with the updated comment's content, route to comments/id
     countriesPage.innerHTML = ""
     queensPage.innerHTML = ""
     teamPage.innerHTML = ""
@@ -201,8 +232,6 @@ function addQueenShowSection(singleQueen) {
 
     const commentForm = document.querySelector("#comment-form")
     commentForm.addEventListener("submit", handleCommentForm)
-    console.log(singleQueen.id, "queen id")
-    console.log(currentUser.id, "user")
     function handleCommentForm(e) {
         e.preventDefault()
         const newComment = e.target[0].value
@@ -280,6 +309,9 @@ function showAllTeams(e) {
     bodyDiv.append(headingDiv, buttonDiv, deleteButtonDiv)
     teamDiv.append(imgDiv, bodyDiv)
     landingPage.append(teamDiv)
+    countrySelector.innerHTML = ""
+    countriesPage.innerHTML = ""
+    teamPage.innerHTML = ""
 }
 
 function teamButtonClick(e) {
@@ -287,15 +319,14 @@ function teamButtonClick(e) {
 }
 
 function handleDeleteClick(e){
-    console.log(e)
     if (e.target.className === "btn btn-primary delete-button"){
       const deleteTeamId = e.target.dataset.id
-      deleteTeam(deleteTeamId).then(getCurrentUserTeams(currentUser))
+      deleteTeam(deleteTeamId).then(landingPage.innerHTML = "").then(getCurrentUserTeams(currentUser))
     }
 }
 
 function deleteTeam(id){
-    return fetch(`http://localhost:3000/teams/${id}`, {
+    fetch(`http://localhost:3000/teams/${id}`, {
       method: "DELETE"
     })
 }
