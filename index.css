@@ -383,7 +383,7 @@ img.displayed-country {
 .team-page {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
 }
 
 .queen-image {

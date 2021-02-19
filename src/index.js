@@ -185,6 +185,9 @@ function showAllCountries(e) {
 
 function addQueenShowSection(singleQueen) {
     // threeFormContainer.innerHTML = ""
+    if (queenContainer.classList.contains("hidden")) {
+        queenContainer.classList.toggle("hidden")
+    }
     queenContainer.innerHTML = `
     <h3 class="queen-name">${singleQueen.name}</h3>
     <img class="queen-image" src=${singleQueen.grid_image} alt=${singleQueen} data-id=${singleQueen.id}/>
@@ -213,7 +216,7 @@ function addQueenShowSection(singleQueen) {
         // event listener on an update comment button that responds to a click with the toggle. listen to a click to toggle, listen to a submit to patch.
         const updateCommentForm = document.createElement("form")
         updateCommentForm.innerHTML = `
-            <textarea placeholder='${comment.content}'></textarea>
+            <textarea placeholder="Update your note..."></textarea>
             <br>
             <div class="btn">
                 <input type="submit" value='Update' class="update-queen-comment" dataQueenId="${singleQueen.id}">
@@ -304,6 +307,7 @@ function showAllTeams(e) {
     teamDiv.dataset.id = e.id
     let imgDiv = document.createElement("img")
     imgDiv.className = "card-img-top"
+    imgDiv.dataset.id = e.id
     imgDiv.src = e.image
     let bodyDiv = document.createElement("div")
     bodyDiv.className = "card-body"
@@ -311,22 +315,18 @@ function showAllTeams(e) {
     headingDiv.className = "card-title"
     headingDiv.textContent = e.name
     let buttonDiv = document.createElement("button")
-    buttonDiv.className = "view-team-button-class" 
+    buttonDiv.className = "btn btn-primary team-button" 
     buttonDiv.textContent = "View Team"
     buttonDiv.dataset.id = e.id
     buttonDiv.addEventListener('click', teamButtonClick)
-    let spacingBreak = document.createElement("br")
     let deleteButtonDiv = document.createElement("button")
-    deleteButtonDiv.className = "delete-button-class"
+    deleteButtonDiv.className = "btn btn-primary delete-button"
     deleteButtonDiv.textContent = "Delete Team"
     deleteButtonDiv.dataset.id = e.id 
     deleteButtonDiv.addEventListener('click', handleDeleteClick)
-    bodyDiv.append(headingDiv, buttonDiv, spacingBreak, deleteButtonDiv)
+    bodyDiv.append(headingDiv, buttonDiv, deleteButtonDiv)
     teamDiv.append(imgDiv, bodyDiv)
     landingPage.append(teamDiv)
-    countrySelector.innerHTML = ""
-    countriesPage.innerHTML = ""
-    teamPage.innerHTML = ""
 }
 
 function teamButtonClick(e) {
@@ -334,8 +334,10 @@ function teamButtonClick(e) {
 }
 
 function handleDeleteClick(e){
+    console.log(e.target.dataset.id)
     let deleteTeamId = e.target.dataset.id
-    if (e.target.className === "delete-button-class"){
+    if (e.target.className === "btn btn-primary delete-button"){
+        console.log("hi")
       fetch(`http://localhost:3000/teams/${deleteTeamId}`, {
       method: "DELETE"
     })
@@ -369,7 +371,10 @@ function getCurrentUserTeams(currentUser) {
     }
     fetch("http://localhost:3000/teams") 
     .then(response => response.json())
-    .then(data => data.forEach(element => element.user_id === currentUser.id ? showAllTeams(element) : ""))
+    .then(data => {
+        // queenContainer.classList.toggle("hidden")
+        data.forEach(element => element.user_id === currentUser.id ? showAllTeams(element) : "")
+    })
     navBar.innerHTML = ""
     renderNavBar()
     queenContainer.innerHTML = ""
@@ -467,6 +472,37 @@ function showAllQueensTwo(e) {
     landingPage.innerHTML = ""
     queenContainer.innerHTML = ""
     countrySelector.innerHTML = ""
+}
+
+function winButtonClick(e) {
+    winningTeam = [...teamPage.children]
+    const r = winningTeam.map(winner => winner.textContent)
+    let newString = r.join(" ")
+    console.log(r)
+    console.log("this worked")
+    console.log(newString)
+    if (newString === "Gigi Goode Jaida Essence Hall Crystal Methyd") {
+    getContract(e.target.dataset.id)
+    let winningImage = document.createElement("img")
+    winningImage.src = "https://filmdaily.co/wp-content/uploads/2020/06/Jaida-Essence-Rupaul-Lede.jpg"
+   teamPage.append(winningImage)
+} else {
+    getContract(e.target.dataset.id)
+}}
+
+function teamButtonClick(e) {
+    // teamPage.insertAdjacentHTML("beforebegin",`<buttton class = 'btn btn-primary team-button' data-id = ${e.id}> View Winner</buttton>`)
+    // console.log(teamPage)
+    // let findButton = document.querySelector(".team-button")
+    let winningDiv = document.createElement("button")
+    winningDiv.className = "btn btn-primary team-button" 
+    winningDiv.textContent = "View Winner"
+    winningDiv.dataset.id = e.id
+    let mainTeamContainer = document.querySelector(".main-team-page-container")
+    mainTeamContainer.append(winningDiv)
+    winningDiv.addEventListener('click', winButtonClick)
+    // landingPage.append(winningDiv)
+    getContract(e.target.dataset.id)
 }
 
 displayLogin()
